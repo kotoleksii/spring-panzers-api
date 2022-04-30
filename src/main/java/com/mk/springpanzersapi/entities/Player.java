@@ -7,8 +7,7 @@ import javax.persistence.*;
 public class Player {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    @Column(name = "id")
-    private int id;
+    private Long id;
 
     @Column(name = "nickname")
     private String nickname;
@@ -25,12 +24,15 @@ public class Player {
     @Column(name = "status")
     private int status;
 
+    @OneToOne(mappedBy = "player", cascade = CascadeType.ALL)
+    @PrimaryKeyJoinColumn
+    private CharacteristicsPlayer characteristicsPlayer;
+
     public Player() {
     }
 
-    public Player(int id, String nickname, String email, String token,
-                  String avatarUrl, int status) {
-        this.id = id;
+    public Player(String nickname, String email, String token,
+              String avatarUrl, int status) {
         this.nickname = nickname;
         this.email = email;
         this.token = token;
@@ -38,11 +40,11 @@ public class Player {
         this.status = status;
     }
 
-    public int getId() {
+    public Long getId() {
         return id;
     }
 
-    public void setId(int id) {
+    public void setId(Long id) {
         this.id = id;
     }
 
@@ -86,15 +88,11 @@ public class Player {
         this.status = status;
     }
 
-    @Override
-    public String toString() {
-        return "Player{" +
-                "id=" + id +
-                ", nickname='" + nickname + '\'' +
-                ", email='" + email + '\'' +
-                ", token='" + token + '\'' +
-                ", avatarUrl='" + avatarUrl + '\'' +
-                ", status=" + status +
-                '}';
+    public CharacteristicsPlayer getCharacteristicsPlayer() {
+        return characteristicsPlayer;
+    }
+
+    public void setCharacteristicsPlayer(CharacteristicsPlayer characteristicsPlayer) {
+        this.characteristicsPlayer = characteristicsPlayer;
     }
 }

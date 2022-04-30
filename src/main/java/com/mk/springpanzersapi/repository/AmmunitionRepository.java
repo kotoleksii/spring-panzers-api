@@ -1,10 +1,10 @@
 package com.mk.springpanzersapi.repository;
 
-import com.mk.springpanzersapi.entities.Player;
+import com.mk.springpanzersapi.entities.Ammunition;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.stereotype.Repository;
 
 @Repository
-public interface PlayerRepository
-        extends JpaRepository<Player, Long> {
+public interface AmmunitionRepository
+        extends JpaRepository<Ammunition, Long> {
 }
