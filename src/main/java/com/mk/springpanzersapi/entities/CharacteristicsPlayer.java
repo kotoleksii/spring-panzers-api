@@ -33,14 +33,14 @@ public class CharacteristicsPlayer {
     @OneToOne
     @MapsId
     @JoinColumn(name = "player_id")
-    private Player player;
+    private User user;
 
     public CharacteristicsPlayer() {
     }
 
     public CharacteristicsPlayer(String rank, String rate, String money,
-                            String fights, String wins, String defeats,
-                        String kills) {
+                                 String fights, String wins, String defeats,
+                                 String kills) {
         this.rank = rank;
         this.rate = rate;
         this.money = money;
@@ -114,11 +114,12 @@ public class CharacteristicsPlayer {
         this.kills = kills;
     }
 
-    public Player getPlayer() {
-        return player;
+    public User getPlayer() {
+        return user;
     }
 
-    public void setPlayer(Player player) {
-        this.player = player;
+    public void setPlayer(User user) {
+        this.user = user;
     }
 }
+

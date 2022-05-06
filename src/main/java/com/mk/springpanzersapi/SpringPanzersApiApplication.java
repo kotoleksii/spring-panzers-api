@@ -1,11 +1,9 @@
 package com.mk.springpanzersapi;
 
 import com.mk.springpanzersapi.entities.Ammunition;
-import com.mk.springpanzersapi.entities.CharacteristicsPlayer;
-import com.mk.springpanzersapi.entities.Player;
 import com.mk.springpanzersapi.repository.AmmunitionRepository;
 import com.mk.springpanzersapi.repository.CharacteristicsPlayerRepository;
-import com.mk.springpanzersapi.repository.PlayerRepository;
+import com.mk.springpanzersapi.repository.UserRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.CommandLineRunner;
 import org.springframework.boot.SpringApplication;
@@ -15,7 +13,7 @@ import org.springframework.boot.autoconfigure.SpringBootApplication;
 public class SpringPanzersApiApplication implements CommandLineRunner {
 
     @Autowired
-    private PlayerRepository playerRepository;
+    private UserRepository playerRepository;
 
     @Autowired
     private CharacteristicsPlayerRepository characteristicsPlayerRepository;
@@ -29,17 +27,15 @@ public class SpringPanzersApiApplication implements CommandLineRunner {
 
     @Override
     public void run(String... args) throws Exception {
-//        //Clean up database tables
+        //Clean up database tables
 //        characteristicsPlayerRepository.deleteAllInBatch();
 //        playerRepository.deleteAllInBatch();
-//        ammunitionRepository.deleteAllInBatch();
-//
+
 //        //Create a Player instance
-//        Player player = new Player(
-//                "player", "player@mail.com",
-//                "dadadadwdwdadadad",
-//                "https://dadadaddad.com/app.png",
-//                0);
+//        User player = new User(
+//                "akkot",
+//                "akkot08@gmail.com",
+//                "12345678");
 //
 //        //Create a CharacteristicsPlayer instance
 //        CharacteristicsPlayer characteristicsPlayer = new CharacteristicsPlayer(
@@ -50,7 +46,7 @@ public class SpringPanzersApiApplication implements CommandLineRunner {
 //        //Set child reference(characteristicsPlayer) in parent entity(player)
 //        player.setCharacteristicsPlayer(characteristicsPlayer);
 //
-//         //Set parent reference(player) in child entity(characteristicsPlayer)
+//        //Set parent reference(player) in child entity(characteristicsPlayer)
 //        characteristicsPlayer.setPlayer(player);
 //
 //        //Save Parent Reference (which will save the child as well)
