@@ -10,7 +10,7 @@ import java.util.Set;
 @Entity
 @Table(name = "users",
         uniqueConstraints = {
-                @UniqueConstraint(columnNames = "username"),
+                @UniqueConstraint(columnNames = "nickname"),
                 @UniqueConstraint(columnNames = "email")
         })
 public class User {
@@ -24,11 +24,11 @@ public class User {
     private String email;
 
     @NotBlank
-    @Size(max = 20)
-    private String username;
+    @Size(max = 15)
+    private String nickname;
 
     @NotBlank
-    @Size(max = 120)
+    @Size(max = 20)
     private String password;
 
     @NotBlank
@@ -40,8 +40,7 @@ public class User {
     private String avatarUrl;
 
     @NotBlank
-    @Size(max = 120)
-    private int status;
+    private boolean status;
 
     @ManyToMany(fetch = FetchType.LAZY)
     @JoinTable(name = "user_roles",
@@ -56,17 +55,23 @@ public class User {
     public User() {
     }
 
-    public User(String username, String email, String password) {
-        this.username = username;
+    public User(String nickname, String email, String password) {
+        this.nickname = nickname;
         this.email = email;
         this.password = password;
     }
 
-    public User(String username, String email, String password, String token) {
-        this.username = username;
+    public User(String nickname,
+                String email,
+                String password,
+                String token,
+                String avatarUrl
+                ) {
+        this.nickname = nickname;
         this.email = email;
         this.password = password;
         this.token = token;
+        this.avatarUrl = avatarUrl;
     }
 
     public Long getId() {
@@ -77,12 +82,12 @@ public class User {
         this.id = id;
     }
 
-    public String getUsername() {
-        return username;
+    public String getNickname() {
+        return nickname;
     }
 
-    public void setUsername(String username) {
-        this.username = username;
+    public void setNickname(String nickname) {
+        this.nickname = nickname;
     }
 
     public String getEmail() {
@@ -117,11 +122,11 @@ public class User {
         this.avatarUrl = avatarUrl;
     }
 
-    public int getStatus() {
+    public boolean getStatus() {
         return status;
     }
 
-    public void setStatus(int status) {
+    public void setStatus(boolean status) {
         this.status = status;
     }
 

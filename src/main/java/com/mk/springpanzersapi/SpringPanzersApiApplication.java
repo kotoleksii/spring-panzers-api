@@ -1,6 +1,7 @@
 package com.mk.springpanzersapi;
 
 import com.mk.springpanzersapi.entities.Ammunition;
+import com.mk.springpanzersapi.entities.User;
 import com.mk.springpanzersapi.repository.AmmunitionRepository;
 import com.mk.springpanzersapi.repository.CharacteristicsPlayerRepository;
 import com.mk.springpanzersapi.repository.UserRepository;
@@ -29,13 +30,14 @@ public class SpringPanzersApiApplication implements CommandLineRunner {
     public void run(String... args) throws Exception {
         //Clean up database tables
 //        characteristicsPlayerRepository.deleteAllInBatch();
-//        playerRepository.deleteAllInBatch();
+        playerRepository.deleteAllInBatch();
 
-//        //Create a Player instance
+        //Create a Player instance
 //        User player = new User(
 //                "akkot",
 //                "akkot08@gmail.com",
-//                "12345678");
+//                "12345678", "dfgdfgdfgdg345nwWFfs");
+//        playerRepository.save(player);
 //
 //        //Create a CharacteristicsPlayer instance
 //        CharacteristicsPlayer characteristicsPlayer = new CharacteristicsPlayer(
