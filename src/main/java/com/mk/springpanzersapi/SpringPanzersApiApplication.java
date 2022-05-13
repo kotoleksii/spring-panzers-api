@@ -1,6 +1,5 @@
 package com.mk.springpanzersapi;
 
-import com.mk.springpanzersapi.entities.Ammunition;
 import com.mk.springpanzersapi.entities.User;
 import com.mk.springpanzersapi.repository.AmmunitionRepository;
 import com.mk.springpanzersapi.repository.CharacteristicsPlayerRepository;
@@ -21,6 +20,8 @@ public class SpringPanzersApiApplication implements CommandLineRunner {
 
     @Autowired
     private AmmunitionRepository ammunitionRepository;
+
+
 
     public static void main(String[] args) {
         SpringApplication.run(SpringPanzersApiApplication.class, args);

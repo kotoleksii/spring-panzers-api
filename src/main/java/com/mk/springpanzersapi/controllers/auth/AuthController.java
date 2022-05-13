@@ -1,6 +1,7 @@
-package com.mk.springpanzersapi.controllers;
+package com.mk.springpanzersapi.controllers.auth;
 
 import com.mk.springpanzersapi.entities.User;
+import com.mk.springpanzersapi.playload.request.CodeRequest;
 import com.mk.springpanzersapi.playload.request.LoginRequest;
 import com.mk.springpanzersapi.playload.request.SignupRequest;
 import com.mk.springpanzersapi.playload.response.JwtResponse;
@@ -74,12 +75,22 @@ public class AuthController {
                     .ok(new MessageResponse("Email is already in use!", "email", false));
         }
 
-        // Create new user's account
         User user = new User(signUpRequest.getNickname(),
                 signUpRequest.getEmail(),
                 encoder.encode(signUpRequest.getPassword()),
                 signUpRequest.getToken(),
                 signUpRequest.getAvatarUrl());
+
+        if(signUpRequest.getToken().equals("")){
+            SecretCode.sendCode(user);
+            return ResponseEntity
+                    .ok(new MessageResponse("Redirect to secret code!", "", true));
+        }
+
+        // Create new user's account
+
+
+
 
 //        Set<String> strRoles = signUpRequest.getRole();
 //        Set<Role> roles = new HashSet<>();
@@ -115,4 +126,9 @@ public class AuthController {
         userRepository.save(user);
         return ResponseEntity.ok(new MessageResponse("User registered successfully!", "", true));
     }
+
+//    @PostMapping("/signup/code")
+//    public ResponseEntity<?> checkCode(@Valid @RequestBody CodeRequest codeRequest){
+//
+//    }
 }
