@@ -12,25 +12,25 @@ public class CharacteristicsPlayer {
     private Long id;
 
     @Column(name = "rank")
-    private String rank;//текст звання
+    private String rank;
 
     @Column(name = "rate")
-    private String rate;//int 200-
+    private int rate;
 
     @Column(name = "money")
-    private String money;//0
+    private int money;
 
     @Column(name = "fights")
-    private String fights;//0
+    private int fights;
 
     @Column(name = "wins")
-    private String wins;//0
+    private int wins;
 
     @Column(name = "defeats")
-    private String defeats;//0
+    private int defeats;
 
     @Column(name = "kills")
-    private String kills;//0
+    private int kills;
 
     @OneToOne
     @MapsId
@@ -40,9 +40,8 @@ public class CharacteristicsPlayer {
     public CharacteristicsPlayer() {
     }
 
-    public CharacteristicsPlayer(String rank, String rate, String money,
-                                 String fights, String wins, String defeats,
-                                 String kills) {
+    public CharacteristicsPlayer(String rank, int rate, int money, int fights,
+                                 int wins, int defeats, int kills) {
         this.rank = rank;
         this.rate = rate;
         this.money = money;
@@ -68,59 +67,59 @@ public class CharacteristicsPlayer {
         this.rank = rank;
     }
 
-    public String getRate() {
+    public int getRate() {
         return rate;
     }
 
-    public void setRate(String rate) {
+    public void setRate(int rate) {
         this.rate = rate;
     }
 
-    public String getMoney() {
+    public int getMoney() {
         return money;
     }
 
-    public void setMoney(String money) {
+    public void setMoney(int money) {
         this.money = money;
     }
 
-    public String getFights() {
+    public int getFights() {
         return fights;
     }
 
-    public void setFights(String fights) {
+    public void setFights(int fights) {
         this.fights = fights;
     }
 
-    public String getWins() {
+    public int getWins() {
         return wins;
     }
 
-    public void setWins(String wins) {
+    public void setWins(int wins) {
         this.wins = wins;
     }
 
-    public String getDefeats() {
+    public int getDefeats() {
         return defeats;
     }
 
-    public void setDefeats(String defeats) {
+    public void setDefeats(int defeats) {
         this.defeats = defeats;
     }
 
-    public String getKills() {
+    public int getKills() {
         return kills;
     }
 
-    public void setKills(String kills) {
+    public void setKills(int kills) {
         this.kills = kills;
     }
 
-    public UserModel getPlayer() {
+    public UserModel getUser() {
         return user;
     }
 
-    public void setPlayer(UserModel user) {
+    public void setUser(UserModel user) {
         this.user = user;
     }
 }

@@ -1,6 +1,7 @@
 package com.mk.springpanzersapi.controllers.auth;
 
 import com.mk.springpanzersapi.controllers.auth.classes.SecretCode;
+import com.mk.springpanzersapi.entities.CharacteristicsPlayer;
 import com.mk.springpanzersapi.entities.auth.SecretCodeModel;
 import com.mk.springpanzersapi.entities.auth.UserModel;
 import com.mk.springpanzersapi.payload.request.auth.LoginRequest;
@@ -81,25 +82,33 @@ public class AuthController {
                     .ok(new MessageResponse("Email is already in use!", "email", false));
         }
 
-        UserModel user = new UserModel(signUpRequest.getNickname(),
+        UserModel user = new UserModel(
+                signUpRequest.getNickname(),
                 signUpRequest.getEmail(),
                 encoder.encode(signUpRequest.getPassword()),
                 signUpRequest.getToken(),
                 signUpRequest.getAvatarUrl());
 
-        if(signUpRequest.getToken().equals("")){
+        //Starting characteristics of the new player
+        CharacteristicsPlayer characteristicsNewPlayer = new CharacteristicsPlayer(
+                "Soldier", 200, 0,
+                0, 0, 0, 0
+        );
+
+        if (signUpRequest.getToken().equals("")) {
             String code = SecretCode.sendCode(user);
             secretCodeRepository.save(new SecretCodeModel(code, user.getEmail()));
+
+            //Set startup characteristics for new user
+            user.setCharacteristicsPlayer(characteristicsNewPlayer);
+            characteristicsNewPlayer.setUser(user);
             userRepository.save(user);
+
             return ResponseEntity
                     .ok(new MessageResponse("Redirect to secret code!", "", true));
         }
 
-        // Create new user's account
-
-
-
-
+//region SetRoles
 //        Set<String> strRoles = signUpRequest.getRole();
 //        Set<Role> roles = new HashSet<>();
 //
@@ -131,16 +140,25 @@ public class AuthController {
 //        }
 //
 //        user.setRoles(roles);
+//endregion
+
+        //Set startup characteristics for new user
+        user.setCharacteristicsPlayer(characteristicsNewPlayer);
+        characteristicsNewPlayer.setUser(user);
+
         userRepository.save(user);
         return ResponseEntity.ok(new MessageResponse("User registered successfully!", "", true));
     }
 
     @PostMapping("/code")
-    public ResponseEntity<?> checkCode(@Valid @RequestBody SecretCodeRequest codeRequest){
+    public ResponseEntity<?> checkCode(@Valid @RequestBody SecretCodeRequest codeRequest) {
         if (secretCodeRepository.existsByEmail(codeRequest.getEmail())) {
             SecretCodeModel codeModel = secretCodeRepository.findByEmail(codeRequest.getEmail());
-            if(codeRequest.getCode().equals(codeModel.getCode())){
-                //TODO: delete codeByEmail
+            if (codeRequest.getCode().equals(codeModel.getCode())) {
+                //TODO: delete codeByEmail or entry???
+//                codeModel.setCode("");
+//                secretCodeRepository.save(codeModel);
+                secretCodeRepository.delete(codeModel);
                 return ResponseEntity
                         .ok(new MessageResponse("Its all right", "", true));
             }

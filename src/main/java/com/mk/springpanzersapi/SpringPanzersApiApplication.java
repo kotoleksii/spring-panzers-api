@@ -25,7 +25,6 @@ public class SpringPanzersApiApplication implements CommandLineRunner {
     private AmmunitionRepository ammunitionRepository;
 
 
-
     public static void main(String[] args) {
         SpringApplication.run(SpringPanzersApiApplication.class, args);
     }
@@ -33,7 +32,7 @@ public class SpringPanzersApiApplication implements CommandLineRunner {
     @Override
     public void run(String... args) throws Exception {
         //Clean up database tables
-//        characteristicsPlayerRepository.deleteAllInBatch();
+        characteristicsPlayerRepository.deleteAllInBatch();
         playerRepository.deleteAllInBatch();
         secretCodeRepository.deleteAllInBatch();
 

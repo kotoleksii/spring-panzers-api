@@ -25,7 +25,6 @@ public class SignupRequest {
     @Size(min = 3, max = 100)
     private String token;
 
-
     @NotBlank
     @Size(max = 120)
     private String avatarUrl;
