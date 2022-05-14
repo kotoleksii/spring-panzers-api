@@ -2,7 +2,7 @@ package com.mk.springpanzersapi.security.jwt;
 
 import java.util.Date;
 
-import com.mk.springpanzersapi.security.services.UserDetailsImpl;
+import com.mk.springpanzersapi.security.services.auth.UserDetailsImpl;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Value;
@@ -33,7 +33,7 @@ public class JwtUtils {
                 .compact();
     }
 
-    public String getUserNameFromJwtToken(String token) {
+    public String getNicknameFromJwtToken(String token) {
         return Jwts.parser().setSigningKey(jwtSecret).parseClaimsJws(token).getBody().getSubject();
     }
 

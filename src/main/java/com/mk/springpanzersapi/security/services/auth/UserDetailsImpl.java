@@ -1,11 +1,11 @@
-package com.mk.springpanzersapi.security.services;
+package com.mk.springpanzersapi.security.services.auth;
 
 import java.util.Collection;
 import java.util.List;
 import java.util.Objects;
 import java.util.stream.Collectors;
 
-import com.mk.springpanzersapi.entities.User;
+import com.mk.springpanzersapi.entities.auth.UserModel;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
@@ -17,7 +17,7 @@ public class UserDetailsImpl implements UserDetails {
 
     private Long id;
 
-    private String username;
+    private String nickname;
 
     private String email;
 
@@ -26,23 +26,23 @@ public class UserDetailsImpl implements UserDetails {
 
     private Collection<? extends GrantedAuthority> authorities;
 
-    public UserDetailsImpl(Long id, String username, String email, String password,
+    public UserDetailsImpl(Long id, String nickname, String email, String password,
                            Collection<? extends GrantedAuthority> authorities) {
         this.id = id;
-        this.username = username;
+        this.nickname = nickname;
         this.email = email;
         this.password = password;
         this.authorities = authorities;
     }
 
-    public static UserDetailsImpl build(User user) {
+    public static UserDetailsImpl build(UserModel user) {
         List<GrantedAuthority> authorities = user.getRoles().stream()
                 .map(role -> new SimpleGrantedAuthority(role.getName().name()))
                 .collect(Collectors.toList());
 
         return new UserDetailsImpl(
                 user.getId(),
-                user.getUsername(),
+                user.getNickname(),
                 user.getEmail(),
                 user.getPassword(),
                 authorities);
@@ -68,7 +68,7 @@ public class UserDetailsImpl implements UserDetails {
 
     @Override
     public String getUsername() {
-        return username;
+        return nickname;
     }
 
     @Override

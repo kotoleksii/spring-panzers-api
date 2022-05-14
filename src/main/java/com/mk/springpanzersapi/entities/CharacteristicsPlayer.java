@@ -1,5 +1,7 @@
 package com.mk.springpanzersapi.entities;
 
+import com.mk.springpanzersapi.entities.auth.UserModel;
+
 import javax.persistence.*;
 
 @Entity
@@ -33,7 +35,7 @@ public class CharacteristicsPlayer {
     @OneToOne
     @MapsId
     @JoinColumn(name = "player_id")
-    private User user;
+    private UserModel user;
 
     public CharacteristicsPlayer() {
     }
@@ -114,11 +116,11 @@ public class CharacteristicsPlayer {
         this.kills = kills;
     }
 
-    public User getPlayer() {
+    public UserModel getPlayer() {
         return user;
     }
 
-    public void setPlayer(User user) {
+    public void setPlayer(UserModel user) {
         this.user = user;
     }
 }

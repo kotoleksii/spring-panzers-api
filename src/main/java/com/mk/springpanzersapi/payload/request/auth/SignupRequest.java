@@ -1,4 +1,4 @@
-package com.mk.springpanzersapi.playload.request;
+package com.mk.springpanzersapi.payload.request.auth;
 
 import javax.validation.constraints.Email;
 import javax.validation.constraints.NotBlank;
@@ -7,8 +7,8 @@ import java.util.Set;
 
 public class SignupRequest {
     @NotBlank
-    @Size(min = 3, max = 20)
-    private String username;
+    @Size(min = 3, max = 50)
+    private String nickname;
 
     @NotBlank
     @Size(max = 50)
@@ -22,15 +22,20 @@ public class SignupRequest {
     private String password;
 
     @NotBlank
-    @Size(min = 3, max = 20)
+    @Size(min = 3, max = 100)
     private String token;
 
-    public String getUsername() {
-        return username;
+
+    @NotBlank
+    @Size(max = 120)
+    private String avatarUrl;
+
+    public String getNickname() {
+        return nickname;
     }
 
-    public void setUsername(String username) {
-        this.username = username;
+    public void setNickname(String nickname) {
+        this.nickname = nickname;
     }
 
     public String getEmail() {
@@ -64,4 +69,8 @@ public class SignupRequest {
     public void setRole(Set<String> role) {
         this.role = role;
     }
+
+    public String getAvatarUrl() { return avatarUrl; }
+
+    public void setAvatarUrl(String avatarUrl) { this.avatarUrl = avatarUrl; }
 }

@@ -1,9 +1,9 @@
 package com.mk.springpanzersapi;
 
-import com.mk.springpanzersapi.entities.Ammunition;
 import com.mk.springpanzersapi.repository.AmmunitionRepository;
 import com.mk.springpanzersapi.repository.CharacteristicsPlayerRepository;
-import com.mk.springpanzersapi.repository.UserRepository;
+import com.mk.springpanzersapi.repository.auth.SecretCodeRepository;
+import com.mk.springpanzersapi.repository.auth.UserRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.CommandLineRunner;
 import org.springframework.boot.SpringApplication;
@@ -16,10 +16,15 @@ public class SpringPanzersApiApplication implements CommandLineRunner {
     private UserRepository playerRepository;
 
     @Autowired
+    private SecretCodeRepository secretCodeRepository;
+
+    @Autowired
     private CharacteristicsPlayerRepository characteristicsPlayerRepository;
 
     @Autowired
     private AmmunitionRepository ammunitionRepository;
+
+
 
     public static void main(String[] args) {
         SpringApplication.run(SpringPanzersApiApplication.class, args);
@@ -29,13 +34,15 @@ public class SpringPanzersApiApplication implements CommandLineRunner {
     public void run(String... args) throws Exception {
         //Clean up database tables
 //        characteristicsPlayerRepository.deleteAllInBatch();
-//        playerRepository.deleteAllInBatch();
+        playerRepository.deleteAllInBatch();
+        secretCodeRepository.deleteAllInBatch();
 
-//        //Create a Player instance
+        //Create a Player instance
 //        User player = new User(
 //                "akkot",
 //                "akkot08@gmail.com",
-//                "12345678");
+//                "12345678", "dfgdfgdfgdg345nwWFfs");
+//        playerRepository.save(player);
 //
 //        //Create a CharacteristicsPlayer instance
 //        CharacteristicsPlayer characteristicsPlayer = new CharacteristicsPlayer(
