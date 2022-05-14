@@ -140,6 +140,7 @@ public class AuthController {
         if (secretCodeRepository.existsByEmail(codeRequest.getEmail())) {
             SecretCodeModel codeModel = secretCodeRepository.findByEmail(codeRequest.getEmail());
             if(codeRequest.getCode().equals(codeModel.getCode())){
+                //TODO: delete codeByEmail
                 return ResponseEntity
                         .ok(new MessageResponse("Its all right", "", true));
             }

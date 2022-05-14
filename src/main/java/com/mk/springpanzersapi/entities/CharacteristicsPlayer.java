@@ -12,25 +12,25 @@ public class CharacteristicsPlayer {
     private Long id;
 
     @Column(name = "rank")
-    private String rank;
+    private String rank;//текст звання
 
     @Column(name = "rate")
-    private String rate;
+    private String rate;//int 200-
 
     @Column(name = "money")
-    private String money;
+    private String money;//0
 
     @Column(name = "fights")
-    private String fights;
+    private String fights;//0
 
     @Column(name = "wins")
-    private String wins;
+    private String wins;//0
 
     @Column(name = "defeats")
-    private String defeats;
+    private String defeats;//0
 
     @Column(name = "kills")
-    private String kills;
+    private String kills;//0
 
     @OneToOne
     @MapsId
