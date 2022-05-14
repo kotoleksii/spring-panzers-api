@@ -1,4 +1,4 @@
-package com.mk.springpanzersapi.playload.response;
+package com.mk.springpanzersapi.payload.response;
 
 import java.util.List;
 

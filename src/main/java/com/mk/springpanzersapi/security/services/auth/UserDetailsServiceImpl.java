@@ -1,7 +1,7 @@
-package com.mk.springpanzersapi.security.services;
+package com.mk.springpanzersapi.security.services.auth;
 
-import com.mk.springpanzersapi.entities.User;
-import com.mk.springpanzersapi.repository.UserRepository;
+import com.mk.springpanzersapi.entities.auth.UserModel;
+import com.mk.springpanzersapi.repository.auth.UserRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
@@ -17,7 +17,7 @@ public class UserDetailsServiceImpl implements UserDetailsService {
     @Override
     @Transactional
     public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
-        User user = userRepository.findByNickname(username)
+        UserModel user = userRepository.findByNickname(username)
                 .orElseThrow(() -> new UsernameNotFoundException("User Not Found with username: " + username));
 
         return UserDetailsImpl.build(user);

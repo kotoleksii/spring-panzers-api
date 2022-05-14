@@ -1,15 +1,18 @@
 package com.mk.springpanzersapi.controllers.auth;
 
-import com.mk.springpanzersapi.entities.User;
-import com.mk.springpanzersapi.playload.request.CodeRequest;
-import com.mk.springpanzersapi.playload.request.LoginRequest;
-import com.mk.springpanzersapi.playload.request.SignupRequest;
-import com.mk.springpanzersapi.playload.response.JwtResponse;
-import com.mk.springpanzersapi.playload.response.MessageResponse;
+import com.mk.springpanzersapi.controllers.auth.classes.SecretCode;
+import com.mk.springpanzersapi.entities.auth.SecretCodeModel;
+import com.mk.springpanzersapi.entities.auth.UserModel;
+import com.mk.springpanzersapi.payload.request.auth.LoginRequest;
+import com.mk.springpanzersapi.payload.request.auth.SecretCodeRequest;
+import com.mk.springpanzersapi.payload.request.auth.SignupRequest;
+import com.mk.springpanzersapi.payload.response.JwtResponse;
+import com.mk.springpanzersapi.payload.response.MessageResponse;
 import com.mk.springpanzersapi.repository.RoleRepository;
-import com.mk.springpanzersapi.repository.UserRepository;
+import com.mk.springpanzersapi.repository.auth.SecretCodeRepository;
+import com.mk.springpanzersapi.repository.auth.UserRepository;
 import com.mk.springpanzersapi.security.jwt.JwtUtils;
-import com.mk.springpanzersapi.security.services.UserDetailsImpl;
+import com.mk.springpanzersapi.security.services.auth.UserDetailsImpl;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.authentication.AuthenticationManager;
@@ -32,6 +35,9 @@ public class AuthController {
 
     @Autowired
     UserRepository userRepository;
+
+    @Autowired
+    SecretCodeRepository secretCodeRepository;
 
     @Autowired
     RoleRepository roleRepository;
@@ -75,14 +81,16 @@ public class AuthController {
                     .ok(new MessageResponse("Email is already in use!", "email", false));
         }
 
-        User user = new User(signUpRequest.getNickname(),
+        UserModel user = new UserModel(signUpRequest.getNickname(),
                 signUpRequest.getEmail(),
                 encoder.encode(signUpRequest.getPassword()),
                 signUpRequest.getToken(),
                 signUpRequest.getAvatarUrl());
 
         if(signUpRequest.getToken().equals("")){
-            SecretCode.sendCode(user);
+            String code = SecretCode.sendCode(user);
+            secretCodeRepository.save(new SecretCodeModel(code, user.getEmail()));
+            userRepository.save(user);
             return ResponseEntity
                     .ok(new MessageResponse("Redirect to secret code!", "", true));
         }
@@ -127,8 +135,15 @@ public class AuthController {
         return ResponseEntity.ok(new MessageResponse("User registered successfully!", "", true));
     }
 
-//    @PostMapping("/signup/code")
-//    public ResponseEntity<?> checkCode(@Valid @RequestBody CodeRequest codeRequest){
-//
-//    }
+    @PostMapping("/code")
+    public ResponseEntity<?> checkCode(@Valid @RequestBody SecretCodeRequest codeRequest){
+        if (secretCodeRepository.existsByEmail(codeRequest.getEmail())) {
+            SecretCodeModel codeModel = secretCodeRepository.findByEmail(codeRequest.getEmail());
+            if(codeRequest.getCode().equals(codeModel.getCode())){
+                return ResponseEntity
+                        .ok(new MessageResponse("Its all right", "", true));
+            }
+        }
+        return ResponseEntity.ok(new MessageResponse("Invalid Code", "code", false));
+    }
 }

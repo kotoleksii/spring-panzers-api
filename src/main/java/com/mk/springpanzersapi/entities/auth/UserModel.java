@@ -1,4 +1,7 @@
-package com.mk.springpanzersapi.entities;
+package com.mk.springpanzersapi.entities.auth;
+
+import com.mk.springpanzersapi.entities.CharacteristicsPlayer;
+import com.mk.springpanzersapi.entities.Role;
 
 import javax.persistence.*;
 import javax.validation.constraints.Email;
@@ -13,7 +16,7 @@ import java.util.Set;
                 @UniqueConstraint(columnNames = "nickname"),
                 @UniqueConstraint(columnNames = "email")
         })
-public class User {
+public class UserModel {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
@@ -52,20 +55,20 @@ public class User {
     @PrimaryKeyJoinColumn
     private CharacteristicsPlayer characteristicsPlayer;
 
-    public User() {
+    public UserModel() {
     }
 
-    public User(String nickname, String email, String password) {
+    public UserModel(String nickname, String email, String password) {
         this.nickname = nickname;
         this.email = email;
         this.password = password;
     }
 
-    public User(String nickname,
-                String email,
-                String password,
-                String token,
-                String avatarUrl
+    public UserModel(String nickname,
+                     String email,
+                     String password,
+                     String token,
+                     String avatarUrl
                 ) {
         this.nickname = nickname;
         this.email = email;

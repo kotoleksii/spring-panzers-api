@@ -1,6 +1,6 @@
-package com.mk.springpanzersapi.controllers.auth;
+package com.mk.springpanzersapi.controllers.auth.classes;
 
-import com.mk.springpanzersapi.entities.User;
+import com.mk.springpanzersapi.entities.auth.UserModel;
 import org.springframework.mail.SimpleMailMessage;
 import org.springframework.mail.javamail.JavaMailSenderImpl;
 
@@ -24,7 +24,7 @@ public class SecretCode {
         return Integer.toString(rand.nextInt(899999) + 100000);
     }
 
-    public static String sendCode(User user) {
+    public static String sendCode(UserModel user) {
         JavaMailSenderImpl mailSender = new JavaMailSenderImpl();
         SimpleMailMessage message = new SimpleMailMessage();
         Properties props = mailSender.getJavaMailProperties();

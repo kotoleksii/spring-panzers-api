@@ -1,4 +1,4 @@
-package com.mk.springpanzersapi.playload.request;
+package com.mk.springpanzersapi.payload.request.auth;
 
 import javax.validation.constraints.NotBlank;
 

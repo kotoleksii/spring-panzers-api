@@ -1,6 +1,6 @@
 package com.mk.springpanzersapi.security.jwt;
 
-import com.mk.springpanzersapi.security.services.UserDetailsServiceImpl;
+import com.mk.springpanzersapi.security.services.auth.UserDetailsServiceImpl;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;

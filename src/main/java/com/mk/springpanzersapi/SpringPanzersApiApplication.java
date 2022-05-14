@@ -1,9 +1,9 @@
 package com.mk.springpanzersapi;
 
-import com.mk.springpanzersapi.entities.User;
 import com.mk.springpanzersapi.repository.AmmunitionRepository;
 import com.mk.springpanzersapi.repository.CharacteristicsPlayerRepository;
-import com.mk.springpanzersapi.repository.UserRepository;
+import com.mk.springpanzersapi.repository.auth.SecretCodeRepository;
+import com.mk.springpanzersapi.repository.auth.UserRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.CommandLineRunner;
 import org.springframework.boot.SpringApplication;
@@ -14,6 +14,9 @@ public class SpringPanzersApiApplication implements CommandLineRunner {
 
     @Autowired
     private UserRepository playerRepository;
+
+    @Autowired
+    private SecretCodeRepository secretCodeRepository;
 
     @Autowired
     private CharacteristicsPlayerRepository characteristicsPlayerRepository;
@@ -32,6 +35,7 @@ public class SpringPanzersApiApplication implements CommandLineRunner {
         //Clean up database tables
 //        characteristicsPlayerRepository.deleteAllInBatch();
         playerRepository.deleteAllInBatch();
+        secretCodeRepository.deleteAllInBatch();
 
         //Create a Player instance
 //        User player = new User(
