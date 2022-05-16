@@ -25,6 +25,7 @@ import org.springframework.web.bind.annotation.*;
 
 import javax.validation.Valid;
 import java.util.List;
+import java.util.TimerTask;
 import java.util.stream.Collectors;
 
 @CrossOrigin(origins = "*", maxAge = 3600)
@@ -99,6 +100,9 @@ public class AuthController {
             String code = SecretCode.sendCode(user);
             secretCodeRepository.save(new SecretCodeModel(code, user.getEmail()));
 
+            //delete secret code after 60 sec
+            deleteSecretCodeByUserAfterSetTime(user, 60);
+
             //Set startup characteristics for new user
             user.setCharacteristicsPlayer(characteristicsNewPlayer);
             characteristicsNewPlayer.setUser(user);
@@ -154,15 +158,31 @@ public class AuthController {
     public ResponseEntity<?> checkCode(@Valid @RequestBody SecretCodeRequest codeRequest) {
         if (secretCodeRepository.existsByEmail(codeRequest.getEmail())) {
             SecretCodeModel codeModel = secretCodeRepository.findByEmail(codeRequest.getEmail());
+
             if (codeRequest.getCode().equals(codeModel.getCode())) {
                 //TODO: delete codeByEmail or entry???
 //                codeModel.setCode("");
 //                secretCodeRepository.save(codeModel);
+
                 secretCodeRepository.delete(codeModel);
+
                 return ResponseEntity
                         .ok(new MessageResponse("Its all right", "", true));
             }
         }
         return ResponseEntity.ok(new MessageResponse("Invalid Code", "code", false));
+    }
+
+    /**
+     * time parameter in seconds
+     */
+    private void deleteSecretCodeByUserAfterSetTime(UserModel user, int time) {
+        SecretCodeModel code = secretCodeRepository.findByEmail(user.getEmail());
+        new java.util.Timer().schedule(new TimerTask() {
+            @Override
+            public void run() {
+                secretCodeRepository.delete(code);
+            }
+        }, 1000 * time);
     }
 }
