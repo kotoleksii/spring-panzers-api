@@ -1,9 +1,11 @@
 package com.mk.springpanzersapi.controllers.auth;
 
 import com.mk.springpanzersapi.controllers.auth.classes.SecretCode;
+import com.mk.springpanzersapi.controllers.auth.classes.TokenGenerator;
 import com.mk.springpanzersapi.entities.CharacteristicsPlayer;
 import com.mk.springpanzersapi.entities.auth.SecretCodeModel;
 import com.mk.springpanzersapi.entities.auth.UserModel;
+import com.mk.springpanzersapi.enums.Messages;
 import com.mk.springpanzersapi.payload.request.auth.LoginRequest;
 import com.mk.springpanzersapi.payload.request.auth.SecretCodeRequest;
 import com.mk.springpanzersapi.payload.request.auth.SignupRequest;
@@ -75,12 +77,21 @@ public class AuthController {
     public ResponseEntity<?> registerUser(@Valid @RequestBody SignupRequest signUpRequest) {
         if (userRepository.existsByNickname(signUpRequest.getNickname())) {
             return ResponseEntity
-                    .ok(new MessageResponse("Nickname is already taken!", "nickname", false));
+                    .status(401)
+                    .body(new MessageResponse(Messages.NICKNAME_ERROR.msg, "nickname", "", false));
         }
 
         if (userRepository.existsByEmail(signUpRequest.getEmail())) {
             return ResponseEntity
-                    .ok(new MessageResponse("Email is already in use!", "email", false));
+                    .status(401)
+                    .body(new MessageResponse(Messages.EMAIL_ERROR.msg, "email", "", false));
+        }
+
+        if (signUpRequest.getToken().equals("")) {
+            String code = SecretCode.sendCode(signUpRequest.getNickname(), signUpRequest.getEmail());
+            secretCodeRepository.save(new SecretCodeModel(code, signUpRequest.getEmail()));
+            return ResponseEntity
+                    .ok(new MessageResponse(Messages.AUTH_CODE.msg, "", "", true));
         }
 
         UserModel user = new UserModel(
@@ -95,22 +106,6 @@ public class AuthController {
                 "Soldier", 200, 0,
                 0, 0, 0, 0
         );
-
-        if (signUpRequest.getToken().equals("")) {
-            String code = SecretCode.sendCode(user);
-            secretCodeRepository.save(new SecretCodeModel(code, user.getEmail()));
-
-            //delete secret code after 60 sec
-            deleteSecretCodeByUserAfterSetTime(user, 60);
-
-            //Set startup characteristics for new user
-            user.setCharacteristicsPlayer(characteristicsNewPlayer);
-            characteristicsNewPlayer.setUser(user);
-            userRepository.save(user);
-
-            return ResponseEntity
-                    .ok(new MessageResponse("Redirect to secret code!", "", true));
-        }
 
 //region SetRoles
 //        Set<String> strRoles = signUpRequest.getRole();
@@ -149,40 +144,48 @@ public class AuthController {
         //Set startup characteristics for new user
         user.setCharacteristicsPlayer(characteristicsNewPlayer);
         characteristicsNewPlayer.setUser(user);
-
         userRepository.save(user);
-        return ResponseEntity.ok(new MessageResponse("User registered successfully!", "", true));
+        return ResponseEntity.ok(new MessageResponse(Messages.SUCCESS_AUTH.msg, "", user.getToken(), true));
     }
 
     @PostMapping("/code")
     public ResponseEntity<?> checkCode(@Valid @RequestBody SecretCodeRequest codeRequest) {
         if (secretCodeRepository.existsByEmail(codeRequest.getEmail())) {
             SecretCodeModel codeModel = secretCodeRepository.findByEmail(codeRequest.getEmail());
-
             if (codeRequest.getCode().equals(codeModel.getCode())) {
-                //TODO: delete codeByEmail or entry???
-//                codeModel.setCode("");
-//                secretCodeRepository.save(codeModel);
-
                 secretCodeRepository.delete(codeModel);
-
                 return ResponseEntity
-                        .ok(new MessageResponse("Its all right", "", true));
+                        .ok(new MessageResponse(Messages.MATCH_CODE.msg, "", TokenGenerator.generate(), true));
             }
         }
-        return ResponseEntity.ok(new MessageResponse("Invalid Code", "code", false));
+        return ResponseEntity
+                .status(401)
+                .body(new MessageResponse(Messages.INVALID_CODE.msg, "code", "", false));
     }
 
-    /**
-     * time parameter in seconds
-     */
-    private void deleteSecretCodeByUserAfterSetTime(UserModel user, int time) {
-        SecretCodeModel code = secretCodeRepository.findByEmail(user.getEmail());
-        new java.util.Timer().schedule(new TimerTask() {
-            @Override
-            public void run() {
-                secretCodeRepository.delete(code);
-            }
-        }, 1000 * time);
+    @PostMapping("/resetcode")
+    public ResponseEntity<?> deleteCode(@Valid @RequestBody SecretCodeRequest codeRequest) {
+        if (secretCodeRepository.existsByEmail(codeRequest.getEmail())) {
+            SecretCodeModel codeModel = secretCodeRepository.findByEmail(codeRequest.getEmail());
+            secretCodeRepository.delete(codeModel);
+            return ResponseEntity
+                    .ok(new MessageResponse(Messages.DELETE_CODE.msg, "", "", true));
+        }
+        return ResponseEntity
+                .status(400)
+                .body(new MessageResponse(Messages.BAD_REQUEST.msg, "code", "", false));
     }
+
+//    /**
+//     * time parameter in seconds
+//     */
+//    private void deleteSecretCodeByUserAfterSetTime(UserModel user, int time) {
+//        SecretCodeModel code = secretCodeRepository.findByEmail(user.getEmail());
+//        new java.util.Timer().schedule(new TimerTask() {
+//            @Override
+//            public void run() {
+//                secretCodeRepository.delete(code);
+//            }
+//        }, 1000 * time);
+//    }
 }
