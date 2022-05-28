@@ -15,14 +15,14 @@ import com.mk.springpanzersapi.repository.RoleRepository;
 import com.mk.springpanzersapi.repository.auth.SecretCodeRepository;
 import com.mk.springpanzersapi.repository.auth.UserRepository;
 import com.mk.springpanzersapi.security.jwt.JwtUtils;
-import com.mk.springpanzersapi.security.services.auth.UserDetailsImpl;
+//import com.mk.springpanzersapi.security.services.auth.UserDetailsImpl;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
-import org.springframework.security.authentication.AuthenticationManager;
-import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
-import org.springframework.security.core.Authentication;
-import org.springframework.security.core.context.SecurityContextHolder;
-import org.springframework.security.crypto.password.PasswordEncoder;
+//import org.springframework.security.authentication.AuthenticationManager;
+//import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
+//import org.springframework.security.core.Authentication;
+//import org.springframework.security.core.context.SecurityContextHolder;
+//import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.web.bind.annotation.*;
 
 import javax.validation.Valid;
@@ -34,8 +34,8 @@ import java.util.stream.Collectors;
 @RestController
 @RequestMapping("/api/auth")
 public class AuthController {
-    @Autowired
-    AuthenticationManager authenticationManager;
+//    @Autowired
+//    AuthenticationManager authenticationManager;
 
     @Autowired
     UserRepository userRepository;
@@ -46,32 +46,32 @@ public class AuthController {
     @Autowired
     RoleRepository roleRepository;
 
-    @Autowired
-    PasswordEncoder encoder;
+//    @Autowired
+//    PasswordEncoder encoder;
+//
+//    @Autowired
+//    JwtUtils jwtUtils;
 
-    @Autowired
-    JwtUtils jwtUtils;
-
-    @PostMapping("/signin")
-    public ResponseEntity<?> authenticateUser(@Valid @RequestBody LoginRequest loginRequest) {
-
-        Authentication authentication = authenticationManager.authenticate(
-                new UsernamePasswordAuthenticationToken(loginRequest.getNickname(), loginRequest.getPassword()));
-
-        SecurityContextHolder.getContext().setAuthentication(authentication);
-        String jwt = jwtUtils.generateJwtToken(authentication);
-
-        UserDetailsImpl userDetails = (UserDetailsImpl) authentication.getPrincipal();
-        List<String> roles = userDetails.getAuthorities().stream()
-                .map(item -> item.getAuthority())
-                .collect(Collectors.toList());
-
-        return ResponseEntity.ok(new JwtResponse(jwt,
-                userDetails.getId(),
-                userDetails.getUsername(),
-                userDetails.getEmail(),
-                roles));
-    }
+//    @PostMapping("/signin")
+//    public ResponseEntity<?> authenticateUser(@Valid @RequestBody LoginRequest loginRequest) {
+//
+//        Authentication authentication = authenticationManager.authenticate(
+//                new UsernamePasswordAuthenticationToken(loginRequest.getNickname(), loginRequest.getPassword()));
+//
+//        SecurityContextHolder.getContext().setAuthentication(authentication);
+//        //String jwt = jwtUtils.generateJwtToken(authentication);
+//
+//        UserDetailsImpl userDetails = (UserDetailsImpl) authentication.getPrincipal();
+//        List<String> roles = userDetails.getAuthorities().stream()
+//                .map(item -> item.getAuthority())
+//                .collect(Collectors.toList());
+//
+//        return ResponseEntity.ok(new JwtResponse(jwt,
+//                userDetails.getId(),
+//                userDetails.getUsername(),
+//                userDetails.getEmail(),
+//                roles));
+//    }
 
     @PostMapping("/signup")
     public ResponseEntity<?> registerUser(@Valid @RequestBody SignupRequest signUpRequest) {
@@ -89,6 +89,7 @@ public class AuthController {
 
         if (signUpRequest.getToken().equals("")) {
             String code = SecretCode.sendCode(signUpRequest.getNickname(), signUpRequest.getEmail());
+            SecretCode.getState().put(signUpRequest.getEmail(), code);
             secretCodeRepository.save(new SecretCodeModel(code, signUpRequest.getEmail()));
             return ResponseEntity
                     .ok(new MessageResponse(Messages.AUTH_CODE.msg, "", "", true));
@@ -97,7 +98,8 @@ public class AuthController {
         UserModel user = new UserModel(
                 signUpRequest.getNickname(),
                 signUpRequest.getEmail(),
-                encoder.encode(signUpRequest.getPassword()),
+                //encoder.encode(signUpRequest.getPassword()),
+                signUpRequest.getPassword(),
                 signUpRequest.getToken(),
                 signUpRequest.getAvatarUrl());
 
@@ -163,18 +165,18 @@ public class AuthController {
                 .body(new MessageResponse(Messages.INVALID_CODE.msg, "code", "", false));
     }
 
-    @PostMapping("/resetcode")
-    public ResponseEntity<?> deleteCode(@Valid @RequestBody SecretCodeRequest codeRequest) {
-        if (secretCodeRepository.existsByEmail(codeRequest.getEmail())) {
-            SecretCodeModel codeModel = secretCodeRepository.findByEmail(codeRequest.getEmail());
-            secretCodeRepository.delete(codeModel);
-            return ResponseEntity
-                    .ok(new MessageResponse(Messages.DELETE_CODE.msg, "", "", true));
-        }
-        return ResponseEntity
-                .status(400)
-                .body(new MessageResponse(Messages.BAD_REQUEST.msg, "code", "", false));
-    }
+//    @PostMapping("/resetcode")
+//    public ResponseEntity<?> deleteCode(@Valid @RequestBody SecretCodeRequest codeRequest) {
+//        if (secretCodeRepository.existsByEmail(codeRequest.getEmail())) {
+//            SecretCodeModel codeModel = secretCodeRepository.findByEmail(codeRequest.getEmail());
+//            secretCodeRepository.delete(codeModel);
+//            return ResponseEntity
+//                    .ok(new MessageResponse(Messages.DELETE_CODE.msg, "", "", true));
+//        }
+//        return ResponseEntity
+//                .status(400)
+//                .body(new MessageResponse(Messages.BAD_REQUEST.msg, "code", "", false));
+//    }
 
 //    /**
 //     * time parameter in seconds

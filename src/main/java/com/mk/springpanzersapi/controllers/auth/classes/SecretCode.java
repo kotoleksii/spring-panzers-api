@@ -2,10 +2,13 @@ package com.mk.springpanzersapi.controllers.auth.classes;
 import org.springframework.mail.SimpleMailMessage;
 import org.springframework.mail.javamail.JavaMailSenderImpl;
 
+import java.util.HashMap;
 import java.util.Properties;
 import java.util.Random;
 
 public class SecretCode {
+
+    private static HashMap<String, String> state = new HashMap<String, String>();
 
     private static String getHostFromEmail(String email){
         String host = "";
@@ -40,5 +43,9 @@ public class SecretCode {
         message.setText("Hi " + nickname + ". Your secret code: " + code);
         mailSender.send(message);
         return code;
+    }
+
+    public static HashMap<String, String> getState() {
+        return state;
     }
 }
