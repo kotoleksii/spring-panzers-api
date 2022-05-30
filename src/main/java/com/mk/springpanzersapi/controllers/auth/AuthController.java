@@ -88,9 +88,10 @@ public class AuthController {
         }
 
         if (signUpRequest.getToken().equals("")) {
-            String code = SecretCode.sendCode(signUpRequest.getNickname(), signUpRequest.getEmail());
-            SecretCode.getState().put(signUpRequest.getEmail(), code);
-            secretCodeRepository.save(new SecretCodeModel(code, signUpRequest.getEmail()));
+            if(!secretCodeRepository.existsByEmail(signUpRequest.getEmail())){
+                String code = SecretCode.sendCode(signUpRequest.getNickname(), signUpRequest.getEmail());
+                secretCodeRepository.save(new SecretCodeModel(code, signUpRequest.getEmail()));
+            }
             return ResponseEntity
                     .ok(new MessageResponse(Messages.AUTH_CODE.msg, "", "", true));
         }
