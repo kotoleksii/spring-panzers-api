@@ -41,6 +41,9 @@ public class SpringPanzersApiApplication implements CommandLineRunner {
         playerRepository.deleteAllInBatch();
         secretCodeRepository.deleteAllInBatch();
 
+        Iterable<UserModel> persistedUser =
+                playerRepository.saveAll(initializeUsers());
+
         //Create a Player instance
 //        UserModel player = new UserModel(
 //                "akkot",
@@ -50,31 +53,6 @@ public class SpringPanzersApiApplication implements CommandLineRunner {
 //                "https://avatar.png");
 //        playerRepository.save(player);
 
-        List<UserModel> userEntities = new ArrayList<>() {{
-            add(new UserModel(
-                "user",
-                "user@gmail.com",
-                "user12345678",
-                "userdfgdfgdfgdg345nwWFfs",
-                "https://useravatar.png")
-            );
-            add(new UserModel(
-                    "user1",
-                    "user1@gmail.com",
-                    "user112345678",
-                    "user1dfgdfgdfgdg345nwWFfs",
-                    "https://user1avatar.png")
-            );
-            add(new UserModel(
-                    "user2",
-                    "user2@gmail.com",
-                    "user212345678",
-                    "user2dfgdfgdfgdg345nwWFfs",
-                    "https://user2avatar.png")
-            );
-        }};
-
-        Iterable<UserModel> persistedUser = playerRepository.saveAll(userEntities);
 //
 //        //Create a CharacteristicsPlayer instance
 //        CharacteristicsPlayer characteristicsPlayer = new CharacteristicsPlayer(
@@ -101,5 +79,32 @@ public class SpringPanzersApiApplication implements CommandLineRunner {
 //                "http://aadadad.com/3.png");
 //
 //        ammunitionRepository.save(ammunition);
+    }
+
+    public static List<UserModel> initializeUsers() {
+        List<UserModel> userEntities = new ArrayList<>() {{
+            add(new UserModel(
+                    "user",
+                    "user@gmail.com",
+                    "user12345678",
+                    "userdfgdfgdfgdg345nwWFfs",
+                    "https://useravatar.png")
+            );
+            add(new UserModel(
+                    "user1",
+                    "user1@gmail.com",
+                    "user112345678",
+                    "user1dfgdfgdfgdg345nwWFfs",
+                    "https://user1avatar.png")
+            );
+            add(new UserModel(
+                    "user2",
+                    "user2@gmail.com",
+                    "user212345678",
+                    "user2dfgdfgdfgdg345nwWFfs",
+                    "https://user2avatar.png")
+            );
+        }};
+        return userEntities;
     }
 }
