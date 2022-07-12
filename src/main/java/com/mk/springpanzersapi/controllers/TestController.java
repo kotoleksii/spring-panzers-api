@@ -56,10 +56,10 @@ public class TestController {
 
     @PutMapping("/users/{id}")
     public ResponseEntity<UserModel> updateUser(@PathVariable("id") long id, @RequestBody UserModel user) {
-        Optional<UserModel> tutorialData = userRepository.findById(id);
+        Optional<UserModel> userData = userRepository.findById(id);
 
-        if (tutorialData.isPresent()) {
-            UserModel _user = tutorialData.get();
+        if (userData.isPresent()) {
+            UserModel _user = userData.get();
             _user.setNickname(user.getNickname());
             _user.setEmail(user.getEmail());
             _user.setPassword(user.getPassword());
