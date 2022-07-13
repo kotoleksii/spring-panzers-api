@@ -1,10 +1,17 @@
 package com.mk.springpanzersapi.entities;
 
+import com.fasterxml.jackson.annotation.JsonBackReference;
 import com.mk.springpanzersapi.entities.auth.UserModel;
+import lombok.Getter;
+import lombok.NoArgsConstructor;
+import lombok.Setter;
 
 import javax.persistence.*;
 
 @Entity
+@NoArgsConstructor
+@Getter
+@Setter
 @Table(name = "characteristics_player")
 public class CharacteristicsPlayer {
     @Id
@@ -32,13 +39,11 @@ public class CharacteristicsPlayer {
     @Column(name = "kills")
     private int kills;
 
-    @OneToOne
+    @OneToOne(optional = false)
     @MapsId
+    @JsonBackReference
     @JoinColumn(name = "player_id")
     private UserModel user;
-
-    public CharacteristicsPlayer() {
-    }
 
     public CharacteristicsPlayer(String rank, int rate, int money, int fights,
                                  int wins, int defeats, int kills) {
@@ -49,78 +54,6 @@ public class CharacteristicsPlayer {
         this.wins = wins;
         this.defeats = defeats;
         this.kills = kills;
-    }
-
-    public Long getId() {
-        return id;
-    }
-
-    public void setId(Long id) {
-        this.id = id;
-    }
-
-    public String getRank() {
-        return rank;
-    }
-
-    public void setRank(String rank) {
-        this.rank = rank;
-    }
-
-    public int getRate() {
-        return rate;
-    }
-
-    public void setRate(int rate) {
-        this.rate = rate;
-    }
-
-    public int getMoney() {
-        return money;
-    }
-
-    public void setMoney(int money) {
-        this.money = money;
-    }
-
-    public int getFights() {
-        return fights;
-    }
-
-    public void setFights(int fights) {
-        this.fights = fights;
-    }
-
-    public int getWins() {
-        return wins;
-    }
-
-    public void setWins(int wins) {
-        this.wins = wins;
-    }
-
-    public int getDefeats() {
-        return defeats;
-    }
-
-    public void setDefeats(int defeats) {
-        this.defeats = defeats;
-    }
-
-    public int getKills() {
-        return kills;
-    }
-
-    public void setKills(int kills) {
-        this.kills = kills;
-    }
-
-    public UserModel getUser() {
-        return user;
-    }
-
-    public void setUser(UserModel user) {
-        this.user = user;
     }
 }
 

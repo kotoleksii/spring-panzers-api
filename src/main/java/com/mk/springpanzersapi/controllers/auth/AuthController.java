@@ -14,6 +14,7 @@ import com.mk.springpanzersapi.repository.auth.SecretCodeRepository;
 import com.mk.springpanzersapi.repository.auth.UserRepository;
 import com.mk.springpanzersapi.security.jwt.JwtUtils;
 import com.mk.springpanzersapi.security.services.auth.UserDetailsImpl;
+import com.mk.springpanzersapi.services.InitService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.authentication.AuthenticationManager;
@@ -28,7 +29,7 @@ import java.util.List;
 import java.util.TimerTask;
 import java.util.stream.Collectors;
 
-@CrossOrigin(origins = "*", maxAge = 3600)
+@CrossOrigin(value = "http://localhost:4200/")
 @RestController
 @RequestMapping("/api/auth")
 public class AuthController {
@@ -91,10 +92,8 @@ public class AuthController {
                 signUpRequest.getAvatarUrl());
 
         //Starting characteristics of the new player
-        CharacteristicsPlayer characteristicsNewPlayer = new CharacteristicsPlayer(
-                "Soldier", 200, 0,
-                0, 0, 0, 0
-        );
+        CharacteristicsPlayer characteristicsNewPlayer =
+                InitService.getDefaultCharacteristicsPlayers();
 
         if (signUpRequest.getToken().equals("")) {
             String code = SecretCode.sendCode(user);

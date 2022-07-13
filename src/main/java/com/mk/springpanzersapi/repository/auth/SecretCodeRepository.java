@@ -9,5 +9,6 @@ import java.util.Optional;
 @Repository
 public interface SecretCodeRepository extends JpaRepository<SecretCodeModel, Long> {
     SecretCodeModel findByEmail(String email);
+
     Boolean existsByEmail(String email);
 }

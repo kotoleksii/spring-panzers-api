@@ -1,5 +1,9 @@
 package com.mk.springpanzersapi.entities.auth;
 
+import lombok.Getter;
+import lombok.NoArgsConstructor;
+import lombok.Setter;
+
 import javax.persistence.*;
 import javax.validation.constraints.Email;
 import javax.validation.constraints.NotBlank;
@@ -7,6 +11,9 @@ import javax.validation.constraints.Size;
 
 
 @Entity
+@NoArgsConstructor
+@Getter
+@Setter
 @Table(name = "secretCodes",
         uniqueConstraints = {
                 @UniqueConstraint(columnNames = "email"),
@@ -25,34 +32,8 @@ public class SecretCodeModel {
     @Size(max = 6)
     private String code;
 
-    public SecretCodeModel() {}
-
     public SecretCodeModel(String code, String email) {
         this.email = email;
-        this.code = code;
-    }
-
-    public Long getId() {
-        return id;
-    }
-
-    public void setId(Long id) {
-        this.id = id;
-    }
-
-    public String getEmail() {
-        return email;
-    }
-
-    public void setEmail(String email) {
-        this.email = email;
-    }
-
-    public String getCode() {
-        return code;
-    }
-
-    public void setCode(String code) {
         this.code = code;
     }
 }

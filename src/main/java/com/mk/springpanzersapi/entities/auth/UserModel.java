@@ -1,17 +1,23 @@
 package com.mk.springpanzersapi.entities.auth;
 
+import com.fasterxml.jackson.annotation.JsonManagedReference;
 import com.mk.springpanzersapi.entities.CharacteristicsPlayer;
 import com.mk.springpanzersapi.entities.Role;
+import lombok.Getter;
+import lombok.NoArgsConstructor;
+import lombok.Setter;
 
 import javax.persistence.*;
 import javax.validation.constraints.Email;
 import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.Size;
 import java.util.HashSet;
-import java.util.List;
 import java.util.Set;
 
 @Entity
+@NoArgsConstructor
+@Getter
+@Setter
 @Table(name = "users",
         uniqueConstraints = {
                 @UniqueConstraint(columnNames = "nickname"),
@@ -52,102 +58,18 @@ public class UserModel {
             inverseJoinColumns = @JoinColumn(name = "role_id"))
     private Set<Role> roles = new HashSet<>();
 
-    @OneToOne(mappedBy = "user", cascade = CascadeType.ALL)
+    @OneToOne(mappedBy = "user", fetch = FetchType.LAZY, cascade = CascadeType.ALL)
+    @JsonManagedReference
     @PrimaryKeyJoinColumn
     private CharacteristicsPlayer characteristicsPlayer;
 
-    public UserModel() {
-    }
-
-    public UserModel(String nickname, String email, String password) {
-        this.nickname = nickname;
-        this.email = email;
-        this.password = password;
-    }
-
-    public UserModel(String nickname,
-                     String email,
-                     String password,
-                     String token,
-                     String avatarUrl
-                ) {
+    public UserModel(String nickname, String email, String password,
+                     String token, String avatarUrl) {
         this.nickname = nickname;
         this.email = email;
         this.password = password;
         this.token = token;
         this.avatarUrl = avatarUrl;
-    }
-
-    public Long getId() {
-        return id;
-    }
-
-    public void setId(Long id) {
-        this.id = id;
-    }
-
-    public String getNickname() {
-        return nickname;
-    }
-
-    public void setNickname(String nickname) {
-        this.nickname = nickname;
-    }
-
-    public String getEmail() {
-        return email;
-    }
-
-    public void setEmail(String email) {
-        this.email = email;
-    }
-
-    public String getPassword() {
-        return password;
-    }
-
-    public void setPassword(String password) {
-        this.password = password;
-    }
-
-    public String getToken() {
-        return token;
-    }
-
-    public void setToken(String token) {
-        this.token = token;
-    }
-
-    public String getAvatarUrl() {
-        return avatarUrl;
-    }
-
-    public void setAvatarUrl(String avatarUrl) {
-        this.avatarUrl = avatarUrl;
-    }
-
-    public boolean getStatus() {
-        return status;
-    }
-
-    public void setStatus(boolean status) {
-        this.status = status;
-    }
-
-    public Set<Role> getRoles() {
-        return roles;
-    }
-
-    public void setRoles(Set<Role> roles) {
-        this.roles = roles;
-    }
-
-    public CharacteristicsPlayer getCharacteristicsPlayer() {
-        return characteristicsPlayer;
-    }
-
-    public void setCharacteristicsPlayer(CharacteristicsPlayer characteristicsPlayer) {
-        this.characteristicsPlayer = characteristicsPlayer;
     }
 }
 

@@ -3,18 +3,15 @@ package com.mk.springpanzersapi.controllers;
 import com.mk.springpanzersapi.entities.auth.UserModel;
 import com.mk.springpanzersapi.repository.auth.UserRepository;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.core.ParameterizedTypeReference;
-import org.springframework.http.HttpMethod;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
-import org.springframework.web.client.RestTemplate;
 
 import java.util.List;
 import java.util.Optional;
 
-@CrossOrigin(origins = "*", maxAge = 3600)
+@CrossOrigin(value = "http://localhost:4200/", allowCredentials = "true")
 @RestController
 @RequestMapping("/api/test")
 public class TestController {
@@ -40,6 +37,7 @@ public class TestController {
     @PostMapping("/users")
     public ResponseEntity<UserModel> createUser(@RequestBody UserModel user) {
         try {
+            //TODO: Add Default Player Characteristics
             UserModel _user = userRepository
                     .save(new UserModel(
                             user.getNickname(),

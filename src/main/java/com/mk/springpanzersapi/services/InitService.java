@@ -10,25 +10,17 @@ import java.util.List;
 public class InitService {
     public static List<UserModel> getUsersData() {
         List<UserModel> userEntities = new ArrayList<>() {{
-            add(new UserModel(
-                    "user",
-                    "user@gmail.com",
-                    "user12345678",
-                    "userdfgdfgdfgdg345nwWFfs",
+            add(new UserModel("user", "user@gmail.com",
+                    "user12345678", "userdfgdfgdfgdg345nwWFfs",
                     "https://useravatar.png")
             );
-            add(new UserModel(
-                    "user1",
-                    "user1@gmail.com",
-                    "user112345678",
-                    "user1dfgdfgdfgdg345nwWFfs",
+            add(new UserModel("user1", "user1@gmail.com",
+                    "user112345678", "user1dfgdfgdfgdg345nwWFfs",
                     "https://user1avatar.png")
             );
             add(new UserModel(
-                    "user2",
-                    "user2@gmail.com",
-                    "user212345678",
-                    "user2dfgdfgdfgdg345nwWFfs",
+                    "user2", "user2@gmail.com",
+                    "user212345678", "user2dfgdfgdfgdg345nwWFfs",
                     "https://user2avatar.png")
             );
         }};
@@ -37,21 +29,19 @@ public class InitService {
 
     public static CharacteristicsPlayer getDefaultCharacteristicsPlayers() {
         CharacteristicsPlayer characteristicsPlayer = new CharacteristicsPlayer(
-                "12", 10, 100000,
-                11, 12, 2, 100
+                "Soldier", 200, 0,
+                0, 0, 0, 0
         );
         return characteristicsPlayer;
     }
 
     public static Ammunition getAmmunitionData() {
         Ammunition ammunition = new Ammunition(
-                "bullet",
-                "500",
-                "20",
-                "http://aadadad.com/1.png",
+                "bullet", "500",
+                "20", "http://aadadad.com/1.png",
                 "http://aadadad.com/2.png",
-                "http://aadadad.com/3.png");
-
+                "http://aadadad.com/3.png"
+        );
         return ammunition;
     }
 }
