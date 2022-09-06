@@ -1,7 +1,9 @@
 package com.mk.springpanzersapi.repository.auth;
 
+import com.mk.springpanzersapi.entities.CharacteristicsPlayer;
 import com.mk.springpanzersapi.entities.auth.UserModel;
 import org.springframework.data.jpa.repository.JpaRepository;
+import org.springframework.data.jpa.repository.Query;
 import org.springframework.stereotype.Repository;
 import org.springframework.web.bind.annotation.CrossOrigin;
 
@@ -17,5 +19,6 @@ public interface UserRepository extends JpaRepository<UserModel, Long> {
     Boolean existsByEmail(String email);
 
     Boolean existsByToken(String token);
+
 }
 

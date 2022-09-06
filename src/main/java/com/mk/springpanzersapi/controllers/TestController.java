@@ -1,6 +1,8 @@
 package com.mk.springpanzersapi.controllers;
 
+import com.mk.springpanzersapi.entities.CharacteristicsPlayer;
 import com.mk.springpanzersapi.entities.auth.UserModel;
+import com.mk.springpanzersapi.repository.CharacteristicsPlayerRepository;
 import com.mk.springpanzersapi.repository.auth.UserRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -17,6 +19,8 @@ import java.util.Optional;
 public class TestController {
     @Autowired
     UserRepository userRepository;
+    @Autowired
+    CharacteristicsPlayerRepository characteristicsPlayerRepository;
 
     @GetMapping("/users")
     public List<UserModel> getAllUsers() {
@@ -32,6 +36,27 @@ public class TestController {
         } else {
             return new ResponseEntity<>(HttpStatus.NOT_FOUND);
         }
+    }
+
+    @GetMapping("/users/nickname/{nickname}")
+    public ResponseEntity<UserModel> getUserByNickname(@PathVariable("nickname") String nickname) {
+        Optional<UserModel> userData = userRepository.findByNickname(nickname);
+
+        if (userData.isPresent()) {
+            return new ResponseEntity<>(userData.get(), HttpStatus.OK);
+        } else {
+            return new ResponseEntity<>(HttpStatus.NOT_FOUND);
+        }
+    }
+
+    @GetMapping("/characteristics")
+    public List<CharacteristicsPlayer> getAllCharacteristics() {
+        return characteristicsPlayerRepository.findAll();
+    }
+
+    @GetMapping("/users/maxrateid")
+    public int getUserByMaxRate() {
+        return characteristicsPlayerRepository.findPlayerIdByMaxRate();
     }
 
     @PostMapping("/users")
