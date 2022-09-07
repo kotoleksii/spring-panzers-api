@@ -10,5 +10,5 @@ import org.springframework.stereotype.Repository;
 public interface CharacteristicsPlayerRepository
         extends JpaRepository<CharacteristicsPlayer, Long> {
     @Query(value = "SELECT player_id FROM characteristics_player WHERE rate = (SELECT MAX(rate) FROM characteristics_player) ORDER BY player_id ASC LIMIT 1", nativeQuery = true)
-    public int findPlayerIdByMaxRate();
+    long findPlayerIdByMaxRate();
 }

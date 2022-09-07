@@ -55,8 +55,29 @@ public class TestController {
     }
 
     @GetMapping("/users/maxrateid")
-    public int getUserByMaxRate() {
+    public long getUserIdByMaxRate() {
         return characteristicsPlayerRepository.findPlayerIdByMaxRate();
+    }
+
+    @GetMapping("/users/maxrateuser")
+    public ResponseEntity<UserModel> getUserByMaxRateId() {
+        Optional<UserModel> userData = userRepository.findById(characteristicsPlayerRepository.findPlayerIdByMaxRate());
+
+        if (userData.isPresent()) {
+            return new ResponseEntity<>(userData.get(), HttpStatus.OK);
+        } else {
+            return new ResponseEntity<>(HttpStatus.NOT_FOUND);
+        }
+    }
+
+    @GetMapping("/users/count")
+    public int getUsersCount() {
+        return userRepository.countUsers();
+    }
+
+    @GetMapping("/users/count/online")
+    public int getUsersCountIsOnline() {
+        return userRepository.countByStatusTrue();
     }
 
     @PostMapping("/users")
